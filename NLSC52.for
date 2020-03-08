@@ -29,8 +29,7 @@ CC      runf='RUN.INP'
       open(15,file='RUN.INP')
 
       write(15,*) '2'
-      write(15,'(a6,a1,1x,a8,1x,a8,a7,a1)') campname(1:6),'P',
-     +'C:\GPSR\','C:\GPSD\',campname,'\'
+      write(15,'(a6,a1,1x,a8,1x,a8,a7,a1)') campname(1:6),'P','C:\GPSR\','C:\GPSD\',campname,'\'
 
       close(15)
 
@@ -60,8 +59,7 @@ CC      call system(cmm)
 
  510  read(10,'(a4,a3,2a2)',end=550) basename,doy,ss,yr
 
-      cmm='copy/y C:\GPSD\'//campname//'\BASE\'//basename//doy//ss
-     +//yr//'O C:\GPSD\'//campname
+      cmm='copy/y C:\GPSD\'//campname//'\BASE\'//basename//doy//ss//yr//'O C:\GPSD\'//campname
       call system(cmm)
 
       if(num.ne.0) then
@@ -114,8 +112,7 @@ CC      call system(cmm)
       call system(cmm)
       cmm='ren C:\GPSUSER52\OPT\5230_GEN\SNGDIF.INP SNGDIF.bak'
       call system(cmm)
-      cmm='copy/y SNG_'//basename//'.INP '//'C:\GPSUSER52\OPT\5230_GEN'
-     +//'\SNGDIF.INP'
+      cmm='copy/y SNG_'//basename//'.INP '//'C:\GPSUSER52\OPT\5230_GEN'//'\SNGDIF.INP'
       call system(cmm)
       cmm='del SNG_'//basename//'.INP'
       call system(cmm)
@@ -124,8 +121,7 @@ CC      call system(cmm)
       call system(cmm)
       cmm='ren C:\GPSUSER52\OPT\5230_QIF\GPSEST.INP GPSEST.bak'
       call system(cmm)
-      cmm='copy/y GPS_'//basename//'.INP '//'C:\GPSUSER52\OPT\5230_QIF'
-     +//'\GPSEST.INP'
+      cmm='copy/y GPS_'//basename//'.INP '//'C:\GPSUSER52\OPT\5230_QIF'//'\GPSEST.INP'
       call system(cmm)
       cmm='del GPS_'//basename//'.INP'
       call system(cmm)
@@ -137,12 +133,10 @@ CC      call system(cmm)
 CC     +//campname(1:6)//'P\SUM\'
       call system(cmm)
 
-      cmm='del C:\GPSD\'//campname//'\'//basename//doy//ss
-     +//yr//'O'
+      cmm='del C:\GPSD\'//campname//'\'//basename//doy//ss//yr//'O'
       call system(cmm)
 
-      cmm='move C:\GPSR\'//campname(1:6)//'P\RAW\'//basename//doy//ss
-     +//yr//'O C:\GPSR\'//campname(1:6)//'P\RAW\BASE\'
+      cmm='move C:\GPSR\'//campname(1:6)//'P\RAW\'//basename//doy//ss//yr//'O C:\GPSR\'//campname(1:6)//'P\RAW\BASE\'
       call system(cmm)
 
       go to 500
@@ -163,8 +157,7 @@ CC      open(80,file='TR2SUM.BAT')
       cmm='RDSINEX50 20'//yr//doy//ss(1:1)//'.SNX'
       call system(cmm)
 
-      cmm='copy C:\GPSR\'//campname(1:6)//'P\STA\ABBREV.ABB C:\BERN52\'
-     +//'AUTO\'
+      cmm='copy C:\GPSR\'//campname(1:6)//'P\STA\ABBREV.ABB C:\BERN52\'//'AUTO\'
 
       call system(cmm)
 
@@ -183,8 +176,7 @@ CC      open(80,file='TR2SUM.BAT')
 
 CC      write(80,'(a17,1x,a12)') 'CALL RDSINEX52 20',yr,doy,ss,'.SUM'
 
-      cmm='ren 20'//yr//doy//ss(1:1)//'.SUM '//campname(1:6)//'_'//
-     +site1(1:4)//'_'//site2(1:4)//'.sum'
+      cmm='ren 20'//yr//doy//ss(1:1)//'.SUM '//campname(1:6)//'_'//site1(1:4)//'_'//site2(1:4)//'.sum'
       call system(cmm)
 
       go to 610
@@ -195,8 +187,7 @@ CC      close(80)
 CC      cmm='CALL C:\BERN52\AUTO\TR2SUM.BAT'
 CC      call system(cmm)
 
-      cmm='move C:\BERN52\AUTO\*.SUM C:\GPSR\'//campname(1:6)
-     +//'P\SUM\'
+      cmm='move C:\BERN52\AUTO\*.SUM C:\GPSR\'//campname(1:6)//'P\SUM\'
       call system(cmm)
 
       cmm='del/q C:\BERN52\AUTO\*.SNX'

@@ -132,8 +132,7 @@ CC          if(ty==1) call check(yy,mm,dd,doy,camp,apath,opath,spath,nf,
 CC     +    fixsta,fixcvs,epo,nnf)
           if(ty==0) ty=1
           write(*,'(" Start to execute the formal process ...",/)')
-          call preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,
-     +    fixcvs,nnf)
+          call preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,    fixcvs,nnf)
           call exe_bat(yy,doy,camp,apath,ty,nf,fixsta,fixcvs,epo,nnf)
           do ii=1,200
             if(apath(ii:ii)==' ') then
@@ -142,8 +141,7 @@ CC     +    fixsta,fixcvs,epo,nnf)
               apath(ii:ii)='\'
             end if
           end do
-          rep='ren '//apath(1:ii-1)//'\OUT\FN'//cyc//'???1.OUT FN'//cyc
-     +    //'???'//camp(7:7)//'.OUT'
+          rep='ren '//apath(1:ii-1)//'\OUT\FN'//cyc//'???1.OUT FN'//cyc    //'???'//camp(7:7)//'.OUT'
           call system(rep)
         end do
 
@@ -179,8 +177,7 @@ CC     +    fixsta,fixcvs,epo,nnf)
 CC          call check(yy,mm,dd,doy,camp,apath,opath,spath,nf,fixsta,
 CC     +    fixcvs,epo,nnf)
           write(*,'(" Start to execute the formal process ...",/)')
-          call preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,
-     +    fixcvs,nnf)
+          call preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,    fixcvs,nnf)
           call exe_bat(yy,doy,camp,apath,ty,nf,fixsta,fixcvs,epo,nnf)
           do ii=1,200
             if(apath(ii:ii)==' ') then
@@ -258,16 +255,14 @@ c *     (5) create a session file "SESSIONS.SES" in the folder "STA"   *
 c *     (6) create a fixed station file "FIXSTA.SIG" in the folder     *
 c *         "STA"                                                      *
 c **********************************************************************
-      subroutine preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,
-     +fixcvs,nnf)
+      subroutine preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,fixcvs,nnf)
 
       implicit none
       integer i,ii,iii,j,yy,mm,dd,doy,nf,nnf,y1,day_plus,gpsweek,weekday
       character camp*7,apath*200,opath*200,spath*200,tmp*100,fod(11)*3
       character dyc*3,mmc*2,ddc*2,yyc*4,y1c*2,inf*50,fixsta(nf)*4,iw*5
       real*8 fixcvs(nf,9)
-      data fod /'ATM','BPE','GRD','MSC','OBS','ORB','ORX','OUT','RAW',
-     + 'SOL','STA'/
+      data fod /'ATM','BPE','GRD','MSC','OBS','ORB','ORX','OUT','RAW', 'SOL','STA'/
 
       call int2char(doy,dyc)
       if(yy> 1999) y1=yy-2000
@@ -313,27 +308,21 @@ c **********************************************************************
       call system(tmp)
       !! copy erp file to folder "ORB" *********************************
       call int2char2(yy,yyc)
-      tmp='copy/y C:\BERN52\GPS\GEN\C04_'//yyc//'.ERP '//apath(1:ii+6)//
-     +'\'//fod(6)
+      tmp='copy/y C:\BERN52\GPS\GEN\C04_'//yyc//'.ERP '//apath(1:ii+6)//'\'//fod(6)
       call system(tmp)
-      tmp='copy/y C:\BERN52\AUTO\ITRF2014.CRD '//apath(1:ii+6)//
-     +'\'//fod(11)
+      tmp='copy/y C:\BERN52\AUTO\ITRF2014.CRD '//apath(1:ii+6)//'\'//fod(11)
       call system(tmp)
 
-      tmp='copy/y C:\BERN52\AUTO\ITRF2014.PSD '//apath(1:ii+6)//
-     +'\'//fod(11)
+      tmp='copy/y C:\BERN52\AUTO\ITRF2014.PSD '//apath(1:ii+6)//'\'//fod(11)
       call system(tmp)
 
-      tmp='copy/y C:\BERN52\AUTO\ITRF2014.SIG '//apath(1:ii+6)//
-     +'\'//fod(11)
+      tmp='copy/y C:\BERN52\AUTO\ITRF2014.SIG '//apath(1:ii+6)//'\'//fod(11)
       call system(tmp)
 
-      tmp='copy/y C:\BERN52\AUTO\ITRF2014.STA '//apath(1:ii+6)//
-     +'\'//fod(11)
+      tmp='copy/y C:\BERN52\AUTO\ITRF2014.STA '//apath(1:ii+6)//'\'//fod(11)
       call system(tmp)
 
-      tmp='copy/y C:\BERN52\AUTO\ITRF2014.VEL '//apath(1:ii+6)//
-     +'\'//fod(11)
+      tmp='copy/y C:\BERN52\AUTO\ITRF2014.VEL '//apath(1:ii+6)//'\'//fod(11)
       call system(tmp)
 
 
@@ -355,30 +344,19 @@ CC      close(10)
       call int2char3(dd,ddc)
       open(10,file=inf)
       write(10,*)
-      write(10,'("LIST_OF_SESSIONS 1  """,a3,"1"" """,i4," ",a2," ",a2,"
-     +"" ""00 00 00"" """,i4," ",a2," ",a2,""" ""23 59 59""")')dyc,yy,
-     +mmc,ddc,yy,mmc,ddc
-      write(10,*)'  ## widget = uniline; check_strlen.1 = 4; check_type.
-     +3 = time'
+      write(10,'("LIST_OF_SESSIONS 1  """,a3,"1"" """,i4," ",a2," ",a2,""" ""00 00 00"" """,i4," ",a2," ",a2,""" ""23 59 59""")')dyc,yy,mmc,ddc,yy,mmc,ddc
+      write(10,*)'  ## widget = uniline; check_strlen.1 = 4; check_type.3 = time'
       write(10,*)'  ## check_type.5 = time'
       write(10,*)
       write(10,*)
-      write(10,*)'# BEGIN_PANEL NO_CONDITION ###########################
-     +##########################'
-      write(10,*)'# SESSION TABLE
-     +                         #'
-      write(10,*)'#
-     +                         #'
-      write(10,*)'#    SESSION                START EPOCH
-     +   END EPOCH             #'
-      write(10,*)'#   IDENTIFIER         yyyy mm dd  hh mm ss        yyy
-     +y mm dd  hh mm ss        #'
-      write(10,*)'#    > %%%%            %%%%%%%%%%  %%%%%%%%        %%%
-     +%%%%%%%  %%%%%%%% <      # LIST_OF_SESSIONS'
-      write(10,*)'#
-     +                         #'
-      write(10,*)'# END_PANEL ##########################################
-     +##########################'
+      write(10,*)'# BEGIN_PANEL NO_CONDITION #####################################################'
+      write(10,*)'# SESSION TABLE                         #'
+      write(10,*)'#                         #'
+      write(10,*)'#    SESSION                START EPOCH   END EPOCH             #'
+      write(10,*)'#   IDENTIFIER         yyyy mm dd  hh mm ss        yyyy mm dd  hh mm ss        #'
+      write(10,*)'#    > %%%%            %%%%%%%%%%  %%%%%%%%        %%%%%%%%%%  %%%%%%%% <      # LIST_OF_SESSIONS'
+      write(10,*)'#                         #'
+      write(10,*)'# END_PANEL ####################################################################'
       close(10)
 CC      !! create "FIXSTA.SIG" *******************************************
 CC      inf=apath(1:ii+6)//'\'//fod(11)//'\FIXSTA.SIG'
@@ -424,30 +402,22 @@ c **********************************************************************
       call int2char2(yy,yyc)
       call int2char(doy,dyc)
       ! for continuous-mode (sampling rate: 30 sec) calculation
-      if(ty==1) exe1='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30A.PL '//yyc
-     +//' '//dyc//'1 '//apath
-      if(ty==1) exe2='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30B.PL '//yyc
-     +//' '//dyc//'1 '//apath
-      if(ty==1) exe3='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30C.PL '//yyc
-     +//' '//dyc//'1 '//apath
+      if(ty==1) exe1='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30A.PL '//yyc//' '//dyc//'1 '//apath
+      if(ty==1) exe2='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30B.PL '//yyc//' '//dyc//'1 '//apath
+      if(ty==1) exe3='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30C.PL '//yyc//' '//dyc//'1 '//apath
       ! for campaign-mode (sampling rate: 15 sec) calculation
 CC      if(ty==2) exe1='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30A.PL '//yyc
 CC     +//' '//dyc//'1 '//apath
 CC      if(ty==2) exe2='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30B.PL '//yyc
 CC     +//' '//dyc//'1 '//apath
-      if(ty==2) exe1='PERL C:\GPSUSER52\SCRIPT\BERN52_S30A_IGS.PL '//yyc
-     +//' '//dyc//'1 '//apath
-      if(ty==2) exe2='PERL C:\GPSUSER52\SCRIPT\BERN52_S30B_IGS.PL '//yyc
-     +//' '//dyc//'1 '//apath
+      if(ty==2) exe1='PERL C:\GPSUSER52\SCRIPT\BERN52_S30A_IGS.PL '//yyc//' '//dyc//'1 '//apath
+      if(ty==2) exe2='PERL C:\GPSUSER52\SCRIPT\BERN52_S30B_IGS.PL '//yyc//' '//dyc//'1 '//apath
 CC      if(ty==2) exe3='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30C.PL '//yyc
 CC     +//' '//dyc//'1 '//apath
       ! for check-mode (sampling rate: 30 sec) calculation
-      if(ty==3) exe1='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30A.PL '//yyc
-     +//' '//dyc//'1 '//apath(1:ii-1)//camp
-      if(ty==3) exe2='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30B.PL '//yyc
-     +//' '//dyc//'1 '//apath(1:ii-1)//camp
-      if(ty==3) exe3='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30C.PL '//yyc
-     +//' '//dyc//'1 '//apath(1:ii-1)//camp
+      if(ty==3) exe1='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30A.PL '//yyc//' '//dyc//'1 '//apath(1:ii-1)//camp
+      if(ty==3) exe2='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30B.PL '//yyc//' '//dyc//'1 '//apath(1:ii-1)//camp
+      if(ty==3) exe3='PERL C:\GPSUSER52\SCRIPT\AUTO52_S30C.PL '//yyc//' '//dyc//'1 '//apath(1:ii-1)//camp
       call system(exe1)
       rty=1
       call rpcoord(yy,doy,dyc,n,fixsta,fixcvs,epo,apath,ty,camp,nnf,rty)
@@ -463,8 +433,7 @@ c **********************************************************************
 c *   subroutine rpcoord : replace the coordinates of constrained      *
 c *                        stations for file "GPS_RES.CRD"            *
 c **********************************************************************
-      subroutine rpcoord(yy,doy,dyc,n,fixsta,fixcvs,epo,apath,oty,camp,
-     +nnf,rty)
+      subroutine rpcoord(yy,doy,dyc,n,fixsta,fixcvs,epo,apath,oty,camp,nnf,rty)
 
       implicit none
       integer i,j,ii,n,yy,doy,stat,ty,oty,nnf,rty
@@ -534,8 +503,7 @@ c **********************************************************************
         do i=1,nnf
           if(l(6:9)==fixsta(i)) then
             ty=1
-            write(10,'(a21,3f15.4,a5)')l(1:21),(fixcvs(i,j)+fixcvs(i,
-     +      j+3)*(yr-epo(i)),j=1,3),l(67:71)
+            write(10,'(a21,3f15.4,a5)')l(1:21),(fixcvs(i,j)+fixcvs(i,      j+3)*(yr-epo(i)),j=1,3),l(67:71)
             exit
           end if
         end do
@@ -687,8 +655,7 @@ c *     (5) create a session file "SESSIONS.SES" in the folder "STA"   *
 c *     (6) create a fixed station file "FIXSTA.SIG" in the folder     *
 c *         "STA"                                                      *
 c **********************************************************************
-      subroutine preBPE_check(yy,mm,dd,doy,nf,camp,oapath,oopath,ospath,
-     +fixsta,fixcvs,tty,n,nnf)
+      subroutine preBPE_check(yy,mm,dd,doy,nf,camp,oapath,oopath,ospath,fixsta,fixcvs,tty,n,nnf)
 
       implicit none
       integer i,ii,iii,j,yy,mm,dd,doy,nf,n,stat,k,ty,tyy,tty,nnf,y1
@@ -697,8 +664,7 @@ c **********************************************************************
       character camp*7,tmp*100,fod(11)*3,osta(nf)*4,line*100,iweek*5
       character dyc*3,mmc*2,ddc*2,yyc*4,y1c*2,inf*50,fixsta(nf)*4
       real*8 fixcvs(nf,9)
-      data fod /'ATM','BPE','GRD','MSC','OBS','ORB','ORX','OUT','RAW',
-     + 'SOL','STA'/
+      data fod /'ATM','BPE','GRD','MSC','OBS','ORB','ORX','OUT','RAW', 'SOL','STA'/
 
       tty=0
       apath=oapath
@@ -754,11 +720,9 @@ CC     +  apath(1:ii+6)//'\'//fod(9)
       call system(tmp)
       !! copy erp file to folder "ORB" *********************************
       call int2char2(yy,yyc)
-      tmp='copy/y C:\BERN52\GPS\GEN\C04_'//yyc//'.ERP '//apath(1:ii+6)//
-     +'\'//fod(6)
+      tmp='copy/y C:\BERN52\GPS\GEN\C04_'//yyc//'.ERP '//apath(1:ii+6)//'\'//fod(6)
       call system(tmp)
-      tmp='copy/y C:\BERN52\AUTO\T97_2010.CRD '//apath(1:ii+6)//
-     +'\'//fod(11)
+      tmp='copy/y C:\BERN52\AUTO\T97_2010.CRD '//apath(1:ii+6)//'\'//fod(11)
       call system(tmp)
 CC      !! create "RINEX.CRD" ********************************************
 CC      inf=apath(1:ii+6)//'\'//fod(11)//'\RINEX.CRD'
@@ -778,30 +742,19 @@ CC      close(10)
       call int2char3(dd,ddc)
       open(10,file=inf)
       write(10,*)
-      write(10,'("LIST_OF_SESSIONS 1  """,a3,"1"" """,i4," ",a2," ",a2,"
-     +"" ""00 00 00"" """,i4," ",a2," ",a2,""" ""23 59 59""")')dyc,yy,
-     +mmc,ddc,yy,mmc,ddc
-      write(10,*)'  ## widget = uniline; check_strlen.1 = 4; check_type.
-     +3 = time'
+      write(10,'("LIST_OF_SESSIONS 1  """,a3,"1"" """,i4," ",a2," ",a2,""" ""00 00 00"" """,i4," ",a2," ",a2,""" ""23 59 59""")')dyc,yy,mmc,ddc,yy,mmc,ddc
+      write(10,*)'  ## widget = uniline; check_strlen.1 = 4; check_type.3 = time'
       write(10,*)'  ## check_type.5 = time'
       write(10,*)
       write(10,*)
-      write(10,*)'# BEGIN_PANEL NO_CONDITION ###########################
-     +##########################'
-      write(10,*)'# SESSION TABLE
-     +                         #'
-      write(10,*)'#
-     +                         #'
-      write(10,*)'#    SESSION                START EPOCH
-     +   END EPOCH             #'
-      write(10,*)'#   IDENTIFIER         yyyy mm dd  hh mm ss        yyy
-     +y mm dd  hh mm ss        #'
-      write(10,*)'#    > %%%%            %%%%%%%%%%  %%%%%%%%        %%%
-     +%%%%%%%  %%%%%%%% <      # LIST_OF_SESSIONS'
-      write(10,*)'#
-     +                         #'
-      write(10,*)'# END_PANEL ##########################################
-     +##########################'
+      write(10,*)'# BEGIN_PANEL NO_CONDITION #####################################################'
+      write(10,*)'# SESSION TABLE                         #'
+      write(10,*)'#                         #'
+      write(10,*)'#    SESSION                START EPOCH   END EPOCH             #'
+      write(10,*)'#   IDENTIFIER         yyyy mm dd  hh mm ss        yyyy mm dd  hh mm ss        #'
+      write(10,*)'#    > %%%%            %%%%%%%%%%  %%%%%%%%        %%%%%%%%%%  %%%%%%%% <      # LIST_OF_SESSIONS'
+      write(10,*)'#                         #'
+      write(10,*)'# END_PANEL ####################################################################'
       close(10)
 CC      !! create "FIXSTA.SIG" *******************************************
 CC      tmp='for %f in ('//apath(1:ii+6)//'\'//fod(11)//'\*.??o) do echo
@@ -863,8 +816,7 @@ c *   subroutine cmpbline : compare the calculated and theoretical     *
 c *                         lengths of baselines between constrained   *
 c *                         stations                                   *
 c **********************************************************************
-      subroutine cmpbline(yy,doy,camp,oapath,nf,fixsta,fixcvs,epo,ne,
-     +nbb,bbsta,checkty,nnf)
+      subroutine cmpbline(yy,doy,camp,oapath,nf,fixsta,fixcvs,epo,ne,nbb,bbsta,checkty,nnf)
 
       implicit none
       integer i,j,k,ii,yy,doy,y,nf,ne,nc,nn,nb,s1,s2,ch,nbb,checkty,pf
@@ -950,10 +902,8 @@ CC      inf=inf
             end if
           end do
           nc=nc+1
-          blin1=sqrt((cod1(s1,1)-cod1(s2,1))**2+
-     +          (cod1(s1,2)-cod1(s2,2))**2+(cod1(s1,3)-cod1(s2,3))**2)
-          blin2=sqrt((cod2(i,1)-cod2(j,1))**2+(cod2(i,2)-cod2(j,2))**2+
-     +          (cod2(i,3)-cod2(j,3))**2)
+          blin1=sqrt((cod1(s1,1)-cod1(s2,1))**2+          (cod1(s1,2)-cod1(s2,2))**2+(cod1(s1,3)-cod1(s2,3))**2)
+          blin2=sqrt((cod2(i,1)-cod2(j,1))**2+(cod2(i,2)-cod2(j,2))**2+          (cod2(i,3)-cod2(j,3))**2)
           dif(nc)=abs((blin1-blin2)*1.e3)
           chk=a+b*blin1*1.e-3
           csta(nc*2-1)=sta(i)
@@ -1037,10 +987,8 @@ CC      inf=inf
           do i=1,ne
             do j=1,nnf
               if(fixsta(j)(1:4)==sta(i)(1:4)) then
-                if(i==1) dif1=sqrt((cod1(j,1)-cod2(i,1))**2+(cod1(j,2)-
-     +          cod2(i,2))**2+(cod1(j,3)-cod1(i,3))**2)
-                if(i==2) dif2=sqrt((cod1(j,1)-cod2(i,1))**2+(cod1(j,2)-
-     +          cod2(i,2))**2+(cod1(j,3)-cod1(i,3))**2)
+                if(i==1) dif1=sqrt((cod1(j,1)-cod2(i,1))**2+(cod1(j,2)-          cod2(i,2))**2+(cod1(j,3)-cod1(i,3))**2)
+                if(i==2) dif2=sqrt((cod1(j,1)-cod2(i,1))**2+(cod1(j,2)-          cod2(i,2))**2+(cod1(j,3)-cod1(i,3))**2)
                 exit
               end if
             end do
@@ -1067,8 +1015,7 @@ CC      inf=inf
 
       !! re-organize fixsta, fixcvs, epo
       if(ch==0.and.nb>0) call re_fix(nb,bsta,nf,fixsta,fixcvs,epo,nnf)
-      if(ch==1.and.nn>=1.and.nb>0)
-     +call re_fix(nb,bsta,nf,fixsta,fixcvs,epo,nnf)
+      if(ch==1.and.nn>=1.and.nb>0)call re_fix(nb,bsta,nf,fixsta,fixcvs,epo,nnf)
 
       deallocate(ty,dif,csta)
 

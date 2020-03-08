@@ -47,8 +47,7 @@ c **********************************************************************
       call system('copy FIXSTA.SIG D:\GPSR\ADDNEQ\STA\')
 
 
-      cmm='PERL C:\GPSUSER52\SCRIPT\BERN52_ADDNEQ.PL 2018 0011 D:\GPSR\A
-     +DDNEQ'
+      cmm='PERL C:\GPSUSER52\SCRIPT\BERN52_ADDNEQ.PL 2018 0011 D:\GPSR\ADDNEQ'
       call system(cmm)
 
       call system('copy D:\GPSR\ADDNEQ\SOL\ADDNEQ.SNX C:\BERN52\AUTO\')

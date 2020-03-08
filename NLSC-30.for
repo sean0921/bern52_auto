@@ -31,8 +31,7 @@ c **********************************************************************
       open(15,file='RUN.INP')
 
       write(15,*) '2'
-      write(15,'(a7,1x,a8,1x,a8,a7,a1)') campname(1:7),
-     +'D:\GPSR\','D:\GPSD\',campname,'\'
+      write(15,'(a7,1x,a8,1x,a8,a7,a1)') campname(1:7),'D:\GPSR\','D:\GPSD\',campname,'\'
 
       close(15)
 
@@ -76,8 +75,7 @@ c **********************************************************************
         cmm='RDSINEX50 20'//yr//doy//ss(1:1)//'.SNX'
         call system(cmm)
 
-        cmm='move C:\BERN52\AUTO\*.SUM D:\GPSR\'//campname(1:7)
-     +//'\SUM\'
+        cmm='move C:\BERN52\AUTO\*.SUM D:\GPSR\'//campname(1:7)//'\SUM\'
         call system(cmm)
         cmm='rename D:\GPSR\'//campname(1:7)//' '//campname(1:7)//'P'
         call system(cmm)

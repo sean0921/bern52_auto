@@ -30,8 +30,7 @@ CC      runf='RUN.INP'
       open(15,file='RUN.INP')
 
       write(15,*) '2'
-      write(15,'(a6,a1,1x,a8,1x,a8,a7,a1)') campname(1:6),'P',
-     +'D:\GPSR\','D:\GPSD\',campname,'\'
+      write(15,'(a6,a1,1x,a8,1x,a8,a7,a1)') campname(1:6),'P','D:\GPSR\','D:\GPSD\',campname,'\'
 
       close(15)
 
@@ -232,8 +231,7 @@ CC      close(80)
 CC      cmm='CALL C:\BERN52\AUTO\TR2SUM.BAT'
 CC      call system(cmm)
 
-      cmm='move C:\BERN52\AUTO\*.SUM D:\GPSR\'//campname(1:6)
-     +//'P\SUM\'
+      cmm='move C:\BERN52\AUTO\*.SUM D:\GPSR\'//campname(1:6)//'P\SUM\'
       call system(cmm)
 
       cmm='del/q C:\BERN52\AUTO\*.SNX'
