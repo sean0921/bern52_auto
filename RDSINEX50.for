@@ -9,7 +9,7 @@ c     2000.07.05
 
 C     TRANSFER Bern50 Sinex file to Sum file
 C     modified by dyj 2006/07/06
-     
+
       implicit    none
       integer*2   maxsta
       parameter   (maxsta=50)
@@ -27,7 +27,7 @@ c	integer     index
          print *,' usage   : rdsinex insinex '
          print *,' insinex : input SINEX Solution text file'
 	   print *,' sinex file name format = yyyyddds.snx '
-	   print *,' yyyy=year; ddd=day of year; s=session '  
+	   print *,' yyyy=year; ddd=day of year; s=session '
          stop
       endif
 
@@ -40,38 +40,38 @@ c     add by dyj at 2005/02/04
       outgps=insinex(1:i)
 	outgps(i+1:i+4)='sum'
 c	write(*,*)outgps
-       
+
 c     add by dyj at 2006/07/06
       if (i.eq.9)then
           read(insinex,'(4x,i3,i1)')doy,session
 	else
 	   print *,' sinex file name format = yyyyddds.snx '
-	   print *,' yyyy=year; ddd=day of year; s=session '  
+	   print *,' yyyy=year; ddd=day of year; s=session '
          stop
       endif
-       
-	 
-	  
+
+
+
 c	outgps='rdsinex.out'
       dump='rdsinex.dmp'
       call fnunit(outbase)
-      open (outbase,file=outgps)  
+      open (outbase,file=outgps)
       call fnunit(outdump)
-      open (outdump,file=dump)  
+      open (outdump,file=dump)
 
 c     read in a templete from a sample Summary
       call fnunit(inincl)
       open (inincl,file='rdtrim.dat',status='old')
 
       i=0
-      do while(.true.) 
+      do while(.true.)
          read(inincl,'(a)')line
          i=i+1
          baseline(i)(1:79)=line(1:79)
          if(line(1:7).eq.'#EOFSUM') exit
-      enddo             
-      write(outdump,'(a)')' after read in template'    
-      write(*,'(a)')' after read in template'    
+      enddo
+      write(outdump,'(a)')' after read in template'
+      write(*,'(a)')' after read in template'
 
 c     read in SINEX file
       read(inbase,'(a)') line
@@ -88,8 +88,8 @@ C      if(rms .gt. 0.01) Print *,' warning ****  rms> 0.01 '
 
 C      do while(.true.)
 C         read(inbase,'(a)') line
-C         if(line(1:12).eq.'+INPUT/FILES') exit 
-C      enddo  
+C         if(line(1:12).eq.'+INPUT/FILES') exit
+C      enddo
 C     read(inbase,'(a)') line
 C      read(inbase,'(a)') line
 C      read(inbase,'(a)') line
@@ -100,8 +100,8 @@ C      read(inbase,'(a)') line
 	      baseline(2)(6+k:6+k)='0'
 	      baseline(2)(11+k:11+k)='0'
 	   endif
-      enddo   
-	    
+      enddo
+
 
 
 C      write(*,*)baseline(2)
@@ -151,7 +151,7 @@ c     read in lower triangulat matrix elements
          enddo
       enddo
 
-    
+
 
 99999 continue
       write(outdump,'(a,i6)')' total estimates coordinates =',i
@@ -163,13 +163,13 @@ c     fulfil square matrix elements
       do i=1,imax
          write(outdump,'(i5,2f10.4)')i,dsqrt(vcv(i,i)),stdx(i)
          do j=i+1,imax
-            k=j  
+            k=j
             vcv(i,j)=vcv(k,i)
-         enddo   
+         enddo
       enddo
 
 
-c Start big loop  
+c Start big loop
       ibase=0
       do i=1,ista
          do j=i+1,ista
@@ -215,8 +215,8 @@ c               enddo
 c            enddo
             ii=3*i-2
             jj=3*j-2
-            v11=vcv(ii,ii)+vcv(jj,jj)-2.d0*vcv(ii,jj) 
-            v22=vcv(ii+1,ii+1)+vcv(jj+1,jj+1)-2.d0*vcv(ii+1,jj+1) 
+            v11=vcv(ii,ii)+vcv(jj,jj)-2.d0*vcv(ii,jj)
+            v22=vcv(ii+1,ii+1)+vcv(jj+1,jj+1)-2.d0*vcv(ii+1,jj+1)
             v33=vcv(ii+2,ii+2)+vcv(jj+2,jj+2)-2.d0*vcv(ii+2,jj+2)
             v12=vcv(ii,ii+1)+vcv(jj,jj+1)-vcv(ii,jj+1)-vcv(ii+1,jj)
             v13=vcv(ii,ii+2)+vcv(jj,jj+2)-vcv(ii,jj+2)-vcv(ii+2,jj)
@@ -229,15 +229,15 @@ c            v12=rms**2*v12
 c            v13=rms**2*v13
 c            v23=rms**2*v23
             baseline(6)(13:16)=stanam(i)(1:4)
-            baseline(12)(13:16)=stanam(j)(1:4) 
+            baseline(12)(13:16)=stanam(j)(1:4)
             write(baseline(2)(16:23),'(i4,a4)') ibase,'.SSF'
 	      do k=1,4
 		   if(baseline(2)(15+k:15+k).eq.' ')baseline(2)(15+k:15+k)='0'
-		  enddo   
+		  enddo
             write(baseline(7)(20:79),'(3f20.3)')x84(i),y84(i),z84(i)
             write(baseline(13)(20:79),'(3f20.3)')x84(j),y84(j),z84(j)
             write(baseline(20)(20:79),'(3f20.3)') dx,dy,dz
-            write(baseline(21)(8:28),'(d21.13)') v11                 
+            write(baseline(21)(8:28),'(d21.13)') v11
             write(baseline(22)(8:49),'(2d21.13)')v12,v22
             write(baseline(23)(8:70),'(3d21.13)')v13,v23,v33
 
@@ -245,7 +245,7 @@ c            v23=rms**2*v23
 
 
          enddo
-      enddo 
+      enddo
 
 
       stop 'normal'
@@ -281,15 +281,15 @@ c  open an old file,no read filname         c
 c-------------------------------------------c
       character oldname*30
       logical logic
-1     continue  
+1     continue
 ccc      read(*,'(a)')oldname
       inquire(file=oldname,exist=logic)
-      if(.not.logic) then 
+      if(.not.logic) then
           write(*,*)' file not exist, please reenter =?'
           read(*,'(a)')oldname
           go to 1
-      else  
-          open(iunit,file=oldname,status='old') 
+      else
+          open(iunit,file=oldname,status='old')
       endif
       return
-      end  
+      end

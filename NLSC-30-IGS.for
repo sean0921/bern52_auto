@@ -10,97 +10,97 @@ c *                                                         2018.09.20 *
 c *                                                         2018.11.25 *
 c **********************************************************************
       program nlsc30igs
-      
+
       implicit none
 CCC      character buffer*20,cl*80,inf*50
       character cmm*200,campname*7,snxname*12
       character basename*4,doy*3,ss*2,yr*2
 CCC      integer*4 nargs
-            
+
 CCC      call getcl(cl)
 CCC      call getarg(nargs,buffer,cl)
-      
+
 CCC      inf=buffer
-      
+
       open(5,file='GPSDATA-IGS.LST')
-      
+
  100  read(5,*,end=600) campname
-     
+
       if(campname(1:1).eq.'*') go to 100
-         
-      open(15,file='RUN.INP')   
-      
+
+      open(15,file='RUN.INP')
+
       write(15,*) '2'
       write(15,'(a7,1x,a8,1x,a8,a7,a1)') campname(1:7),
-     +'D:\GPSR\','D:\GPSD\',campname,'\' 
-  
+     +'D:\GPSR\','D:\GPSD\',campname,'\'
+
       close(15)
-      
+
       cmm='dir/b/o D:\GPSD\'//campname//'\*.??O > BASE.LST'
       call system(cmm)
 
       open(10,file='BASE.LST')
-      read(10,'(a4,a3,2a2)') basename,doy,ss,yr 
-      basename=basename 
-      close(10)    
-      
+      read(10,'(a4,a3,2a2)') basename,doy,ss,yr
+      basename=basename
+      close(10)
+
       cmm='md D:\GPSR\'//campname(1:7)//'\SUM'
-      call system(cmm)          
+      call system(cmm)
 
       cmm='BERN52-OBS30-IGS RUN.INP'
       call system(cmm)
 
       cmm='copy D:\GPSR\'//campname(1:7)//'\SOL\*.SNX C:\BERN52\AUTO\'
       call system(cmm)
-     
+
       cmm='dir/b/o C:\BERN52\AUTO\*.SNX > TR2SUM.LST'
       call system(cmm)
-      
+
       open(20,file='TR2SUM.LST')
 
-      
+
       read(20,'(a12)') snxname
-      
+
       if(snxname(1:2).ne.'  ') then
-  
+
         cmm='copy '//snxname//' 20'//yr(1:2)//doy(1:3)//ss(1:1)//'.SNX'
         call system(cmm)
-      
+
         cmm='RDSINEX50 20'//yr//doy//ss(1:1)//'.SNX'
         call system(cmm)
-        
+
         cmm='move C:\BERN52\AUTO\*.SUM D:\GPSR\'//campname(1:7)
      +//'\SUM\'
-        call system(cmm)   
+        call system(cmm)
         cmm='rename D:\GPSR\'//campname(1:7)//' '//campname(1:7)//'I'
-        call system(cmm)   
-      
+        call system(cmm)
+
         cmm='del/q C:\BERN52\AUTO\*.SNX'
         call system(cmm)
-      
+
       else
-          
+
         cmm='rename D:\GPSR\'//campname(1:7)//' '//campname(1:7)//'J'
-        call system(cmm)        
-     
+        call system(cmm)
+
       end if
-        
+
       close(20)
 
       go to 100
-      
+
  600  continue
       cmm='del BASE.LST'
       call system(cmm)
       cmm='del TR2SUM.LST'
       call system(cmm)
       cmm='del RUN.INP'
-      call system(cmm) 
-      
+      call system(cmm)
+
       close(5)
 
       stop
-      end     
+      end
 
 
 CCC      subroutine getarg(numargs,arg,comline)
@@ -129,4 +129,4 @@ CCC         endif
 CCC      end do
 CCC      return
 CCC      end
-      
+

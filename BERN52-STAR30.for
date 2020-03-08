@@ -7,7 +7,7 @@ c *                 created for 5.0 version by kuo-en ching 2007.04.26 *
 c *                modified for 5.2 version by Kwo-Hwa Chen 2016.03.22 *
 c **********************************************************************
       program bern52star30
-      
+
       implicit none
       character buffer*20,cl*80
       character inf*50,infile*60,camp*7,apath*200,opath*200,spath*200
@@ -21,15 +21,15 @@ c **********************************************************************
       common parafix
       data doy1 /0,31,59,90,120,151,181,212,243,273,304,334/
       data doy2 /0,31,60,91,121,152,182,213,244,274,305,335/
-      
+
 CC      write(*,'(" Input file name:  ")')
 CC      read(*,'(a\)')inf
 
       call getcl(cl)
       call getarg(nargs,buffer,cl)
-      
+
       inf=buffer
-      
+
       !! read "FIXSTA.DAT" *********************************************
       do i=1,100
         tmp(i)=''
@@ -63,7 +63,7 @@ CC      read(*,'(a\)')inf
       close(11)
       nl=nl-1
       allocate(fixsta(nf),fixcvs(nf,9),epo(nf))
-      
+
       !! re-set the path of input file *********************************
       n=0
       do ii=1,50
@@ -75,11 +75,11 @@ CC      read(*,'(a\)')inf
       end do
 CC      infile='C:\BERN52\'//inf(1:n)
       infile=inf(1:n)
-      
+
       !! read input file ***********************************************
       open(11,file=infile,status='old')
       read(11,*)ty
-      
+
       if(ty==0.or.ty==1) then  ! ty==1 or ty==0 ************************
         read(11,*)yy,mm,dd,tinv,s1,s2,s3
         if(mod(yy,4)==0) then
@@ -88,7 +88,7 @@ CC      infile='C:\BERN52\'//inf(1:n)
           doy=doy1(mm)+dd
         end if
         doy=doy-1
-        
+
         do i=1,tinv
           doy=doy+1
           if((mod(yy,4)==0).and.(doy>366))then
@@ -146,7 +146,7 @@ CC     +    fixsta,fixcvs,epo,nnf)
      +    //'???'//camp(7:7)//'.OUT'
           call system(rep)
         end do
-        
+
       else if(ty==2) then  ! ty==2 *************************************
         n=0
         stat=0
@@ -195,9 +195,9 @@ CC          call system(rep)
         end do
         deallocate(line)
       end if  ! end of "ty" judgement ************************************
-      
+
       deallocate(fixsta,fixcvs,epo)
-      
+
       stop
       end
 
@@ -212,17 +212,17 @@ c *                     stations                                       *
 c *     (4) epo(n): epoch of the given coordinates for each station    *
 c **********************************************************************
       subroutine fixinf(yy,doy,nl,n,line,tmp,fixsta,fixcvs,epo)
-      
+
       implicit none
       integer i,j,n,nl,nn,yy,doy
       character line(nl)*200,tmp(100)*4,p1*4,fixsta(n)*4
       real*8 fixcvs(n,9),epo(n),yr
       real*8 p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13
       nn=0
-      
+
       if(mod(yy,4)/=0) yr=real(yy)+real(doy-1)/365.
       if(mod(yy,4)==0) yr=real(yy)+real(doy-1)/366.
-      
+
       do i=1,nl  ! for tmp
         do j=1,nl  ! for line
           read(line(j),*)p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13
@@ -246,7 +246,7 @@ c **********************************************************************
 
       return
       end
-      
+
 c **********************************************************************
 c *   subroutine preBPE : preparation for BPE                          *
 c *     (1) create 11 folders, including 'ATM', 'BPE', 'GRD', 'MSC',   *
@@ -260,7 +260,7 @@ c *         "STA"                                                      *
 c **********************************************************************
       subroutine preBPE(yy,mm,dd,doy,nf,camp,apath,opath,spath,fixsta,
      +fixcvs,nnf)
-      
+
       implicit none
       integer i,ii,iii,j,yy,mm,dd,doy,nf,nnf,y1,day_plus,gpsweek,weekday
       character camp*7,apath*200,opath*200,spath*200,tmp*100,fod(11)*3
@@ -268,7 +268,7 @@ c **********************************************************************
       real*8 fixcvs(nf,9)
       data fod /'ATM','BPE','GRD','MSC','OBS','ORB','ORX','OUT','RAW',
      + 'SOL','STA'/
-      
+
       call int2char(doy,dyc)
       if(yy> 1999) y1=yy-2000
       if(yy<=1999) y1=yy-1900
@@ -324,7 +324,7 @@ c **********************************************************************
      +--------------------------'
       write(10,*)'LOCAL GEODETIC DATUM: ITRF2008          EPOCH:'
       write(10,*)
-      write(10,*)'NUM  STATION NAME           X (M)          Y (M)      
+      write(10,*)'NUM  STATION NAME           X (M)          Y (M)
      +    Z (M)     FLAG'
       write(10,*)
       close(10)
@@ -344,17 +344,17 @@ c **********************************************************************
       write(10,*)
       write(10,*)'# BEGIN_PANEL NO_CONDITION ###########################
      +##########################'
-      write(10,*)'# SESSION TABLE                                       
+      write(10,*)'# SESSION TABLE
      +                         #'
-      write(10,*)'#                                                     
+      write(10,*)'#
      +                         #'
-      write(10,*)'#    SESSION                START EPOCH               
+      write(10,*)'#    SESSION                START EPOCH
      +   END EPOCH             #'
       write(10,*)'#   IDENTIFIER         yyyy mm dd  hh mm ss        yyy
      +y mm dd  hh mm ss        #'
       write(10,*)'#    > %%%%            %%%%%%%%%%  %%%%%%%%        %%%
      +%%%%%%%  %%%%%%%% <      # LIST_OF_SESSIONS'
-      write(10,*)'#                                                     
+      write(10,*)'#
      +                         #'
       write(10,*)'# END_PANEL ##########################################
      +##########################'
@@ -362,14 +362,14 @@ c **********************************************************************
       !! create "FIXSTA.SIG" *******************************************
       inf=apath(1:ii+6)//'\'//fod(11)//'\FIXSTA.SIG'
       open(10,file=inf)
-      write(10,*)'Station sigma file                                    
+      write(10,*)'Station sigma file
      +           25-OCT-03 15:46'
       write(10,*)'------------------------------------------------------
      +--------------------------'
       write(10,*)
-      write(10,*)'Station name            sigma1    sigma2    sigma3    
+      write(10,*)'Station name            sigma1    sigma2    sigma3
      +                          '
-      write(10,*)'****************       **.****   **.****   **.****    
+      write(10,*)'****************       **.****   **.****   **.****
      +                          '
       do i=1,nnf
         write(10,'(a4,16x,3f10.4)')fixsta(i),(fixcvs(i,j),j=7,9)
@@ -378,18 +378,18 @@ c **********************************************************************
 
       return
       end
-      
+
 c **********************************************************************
 c *   subroutine exe_bat : create a perl batch file and run BPE        *
 c **********************************************************************
       subroutine exe_bat(yy,doy,camp,apath,ty,n,fixsta,fixcvs,epo,nnf)
-      
+
       implicit none
       integer n,ii,yy,doy,ty,nnf,rty
       character yyc*4,dyc*3,camp*7,apath*200,exe1*100,exe2*100,exe3*100
       character fixsta(n)*4
       real*8 fixcvs(n,9),epo(n)
-      
+
       !! create a perl batch file **************************************
       do ii=1,200
         if(apath(ii:ii)==' ') then
@@ -398,7 +398,7 @@ c **********************************************************************
           apath(ii:ii)='/'
         end if
       end do
-      
+
       !! execute the BPE ***********************************************
       call int2char2(yy,yyc)
       call int2char(doy,dyc)
@@ -430,7 +430,7 @@ CC     +//' '//dyc//'1 '//apath
       rty=2
       call rpcoord(yy,doy,dyc,n,fixsta,fixcvs,epo,apath,ty,camp,nnf,rty)
       call system(exe3)
-      
+
       return
       end
 
@@ -440,14 +440,14 @@ c *                        stations for file "GPS_RES.CRD"            *
 c **********************************************************************
       subroutine rpcoord(yy,doy,dyc,n,fixsta,fixcvs,epo,apath,oty,camp,
      +nnf,rty)
-      
+
       implicit none
       integer i,j,ii,n,yy,doy,stat,ty,oty,nnf,rty
       character dyc*3,apath*200,fixsta(n)*4,inf1*50,inf2*50,mo*100,l*100
       character camp*7
       real*8 fixcvs(n,9),epo(n),yr
       logical alive
-      
+
       if(mod(yy,4)==0) yr=real(yy)+(real(doy-1))/366.
       if(mod(yy,4)/=0) yr=real(yy)+(real(doy-1))/365.
 
@@ -459,7 +459,7 @@ c **********************************************************************
           apath(ii:ii)='\'
         end if
       end do
-      
+
       if(rty==1) then
         if(oty/=3) inf1=apath(1:ii-1)//'\STA\COD_'//dyc//'1.CRD'
         if(oty/=3) inf2=apath(1:ii-1)//'\STA\COD_'//dyc//'1_o.CRD'
@@ -485,7 +485,7 @@ c **********************************************************************
           return
         end if
       end if
-      
+
       !! read the input file and replace the coordinates ***************
       open(10,file=inf1)
       open(11,file=inf2,status='old')
@@ -518,7 +518,7 @@ c **********************************************************************
       end do
       close(11,status='delete')
       close(10)
-      
+
       return
       end
 
@@ -528,7 +528,7 @@ c *                      and choose the propor constrained stations    *
 c **********************************************************************
 CC     subroutine check(yy,mm,dd,doy,camp,apath,opath,spath,n,fixsta,
 CC    +fixcvs,epo,nnf)
-CC     
+CC
 CC     implicit none
 CC     integer i,n,yy,mm,dd,doy,ty,ne,stat,checkty,nb,nnf,nn
 CC     character fixsta(n)*4,camp*7,apath*200,opath*200,spath*200
@@ -536,9 +536,9 @@ CC     character line*100,chkfile*50
 CC     character,allocatable::bsta(:)*4
 CC     real*8 fixcvs(n,9),epo(n)
 CC     logical alive
-CC     
+CC
 CC     write(*,'(" Start to check the constrained station data ...",/)')
-CC     
+CC
 CC     checkty=0
 CC     nnf=n
 CC     chkfile='C:\BERN52\AUTO\CHECK\'//camp//'.CHK'
@@ -597,14 +597,14 @@ CC         end if
 CC       end do
 CC       close(11)
 CC     end if
-CC     
+CC
 CC     if(nb>0) call re_fix(nb,bsta,n,fixsta,fixcvs,epo,nnf)
 CC     if(checkty==2.and.nb==0) return
 CC     if(checkty==2.and.nb>0) then
 CC       deallocate(bsta)
 CC       return
 CC     end if
-CC     
+CC
 CC     call preBPE_check(yy,mm,dd,doy,n,camp,apath,opath,spath,fixsta,
 CC    +fixcvs,ty,ne,nnf)
 CC
@@ -647,10 +647,10 @@ CC         call del_camp(apath,camp)
 CC         if(nb>0) deallocate(bsta)
 CC       end do
 CC     end if
-CC     
+CC
 CC     return
 CC     end
-      
+
 c **********************************************************************
 c *   subroutine preBPE : preparation for BPE                          *
 c *     (1) create 11 folders, including 'ATM', 'BPE', 'GRD', 'MSC',   *
@@ -664,7 +664,7 @@ c *         "STA"                                                      *
 c **********************************************************************
       subroutine preBPE_check(yy,mm,dd,doy,nf,camp,oapath,oopath,ospath,
      +fixsta,fixcvs,tty,n,nnf)
-      
+
       implicit none
       integer i,ii,iii,j,yy,mm,dd,doy,nf,n,stat,k,ty,tyy,tty,nnf,y1
       integer day_plus,gpsweek,weekday
@@ -674,7 +674,7 @@ c **********************************************************************
       real*8 fixcvs(nf,9)
       data fod /'ATM','BPE','GRD','MSC','OBS','ORB','ORX','OUT','RAW',
      + 'SOL','STA'/
-      
+
       tty=0
       apath=oapath
       opath=oopath
@@ -686,7 +686,7 @@ c **********************************************************************
       do i=1,nf
         osta(i)=''
       end do
-      
+
       !! create folders ************************************************
       do ii=1,200
         if(apath(ii:ii)==' ') then
@@ -740,7 +740,7 @@ c **********************************************************************
      +--------------------------'
       write(10,*)'LOCAL GEODETIC DATUM: ITRF2008          EPOCH:'
       write(10,*)
-      write(10,*)'NUM  STATION NAME           X (M)          Y (M)      
+      write(10,*)'NUM  STATION NAME           X (M)          Y (M)
      +    Z (M)     FLAG'
       write(10,*)
       close(10)
@@ -760,23 +760,23 @@ c **********************************************************************
       write(10,*)
       write(10,*)'# BEGIN_PANEL NO_CONDITION ###########################
      +##########################'
-      write(10,*)'# SESSION TABLE                                       
+      write(10,*)'# SESSION TABLE
      +                         #'
-      write(10,*)'#                                                     
+      write(10,*)'#
      +                         #'
-      write(10,*)'#    SESSION                START EPOCH               
+      write(10,*)'#    SESSION                START EPOCH
      +   END EPOCH             #'
       write(10,*)'#   IDENTIFIER         yyyy mm dd  hh mm ss        yyy
      +y mm dd  hh mm ss        #'
       write(10,*)'#    > %%%%            %%%%%%%%%%  %%%%%%%%        %%%
      +%%%%%%%  %%%%%%%% <      # LIST_OF_SESSIONS'
-      write(10,*)'#                                                     
+      write(10,*)'#
      +                         #'
       write(10,*)'# END_PANEL ##########################################
      +##########################'
       close(10)
       !! create "FIXSTA.SIG" *******************************************
-      tmp='for %f in ('//apath(1:ii+6)//'\'//fod(11)//'\*.??o) do echo 
+      tmp='for %f in ('//apath(1:ii+6)//'\'//fod(11)//'\*.??o) do echo
      + %f >> auto52.inp'
       call system(tmp)
       n=0
@@ -800,14 +800,14 @@ c **********************************************************************
       end if
       inf=apath(1:ii+6)//'\'//fod(11)//'\FIXSTA.SIG'
       open(10,file=inf)
-      write(10,*)'Station sigma file                                    
+      write(10,*)'Station sigma file
      +           25-OCT-03 15:46'
       write(10,*)'------------------------------------------------------
      +--------------------------'
       write(10,*)
-      write(10,*)'Station name            sigma1    sigma2    sigma3    
+      write(10,*)'Station name            sigma1    sigma2    sigma3
      +                          '
-      write(10,*)'****************       **.****   **.****   **.****    
+      write(10,*)'****************       **.****   **.****   **.****
      +                          '
       ty=0
       do i=1,nnf
@@ -829,7 +829,7 @@ c **********************************************************************
 
       return
       end
-      
+
 c **********************************************************************
 c *   subroutine cmpbline : compare the calculated and theoretical     *
 c *                         lengths of baselines between constrained   *
@@ -837,7 +837,7 @@ c *                         stations                                   *
 c **********************************************************************
       subroutine cmpbline(yy,doy,camp,oapath,nf,fixsta,fixcvs,epo,ne,
      +nbb,bbsta,checkty,nnf)
-      
+
       implicit none
       integer i,j,k,ii,yy,doy,y,nf,ne,nc,nn,nb,s1,s2,ch,nbb,checkty,pf
       integer nnf
@@ -858,13 +858,13 @@ c **********************************************************************
         a=3.0
         b=0.03
       end if
-      
+
       chkfile='C:\BERN52\AUTO\CHECK\'//camp//'.CHK'
       inquire(file=chkfile,exist=alive)
       open(11,file=chkfile)
       write(11,'("sta1 sta2   dif    nor")')
       write(11,'("---------------------------")')
-      
+
       !! calculate theoretical coordinates
       if(mod(yy,4)==0) yr=real(yy)+(real(doy-1))/366.
       if(mod(yy,4)/=0) yr=real(yy)+(real(doy-1))/365.
@@ -873,7 +873,7 @@ c **********************************************************************
           cod1(i,j)=(fixcvs(i,j)+fixcvs(i,j+3)*(yr-epo(i)))
         end do
       end do
-      
+
       !! read final coordinate output file
       do ii=1,200
         if(apath(ii:ii)==' ') then
@@ -885,7 +885,7 @@ c **********************************************************************
       if(yy>=2000) y=yy-2000
       call int2char(doy,dyc)
       call int2char3(y,yc)
-      
+
 CC      inf='1'
 CC      inf=inf
       inf=apath(1:ii+6)//'\STA\FN'//yc//dyc//'1.CRD'
@@ -897,7 +897,7 @@ CC      inf=inf
           read(10,'(5x,a4,12x,3f15.4)')sta(i),(cod2(i,j),j=1,3)
         end do
         close(10)
-      
+
       !! check baselines
       nc=0
       do i=1,ne-1
@@ -932,14 +932,14 @@ CC      inf=inf
           csta(nc*2)=sta(j)
           if(dif(nc)<chk) then
            ty(nc)=0
-           write(11,'(a4,"-",a4,2f7.2)')sta(i),sta(j),dif(nc),chk            
+           write(11,'(a4,"-",a4,2f7.2)')sta(i),sta(j),dif(nc),chk
           else
            ty(nc)=1
            write(11,'(a4,"-",a4,2f7.2," BAD")')sta(i),sta(j),dif(nc),chk
           end if
         end do
       end do
-      
+
       !!  look for bad station(s)
       nn=0
       do i=1,nc
@@ -1036,23 +1036,23 @@ CC      inf=inf
       end if
 
       close(11)
-      
+
       !! re-organize fixsta, fixcvs, epo
       if(ch==0.and.nb>0) call re_fix(nb,bsta,nf,fixsta,fixcvs,epo,nnf)
-      if(ch==1.and.nn>=1.and.nb>0) 
+      if(ch==1.and.nn>=1.and.nb>0)
      +call re_fix(nb,bsta,nf,fixsta,fixcvs,epo,nnf)
 
       deallocate(ty,dif,csta)
 
       return
       end
-      
+
 c **********************************************************************
 c *   subroutine re_fix : re-organize the parameters of fixsta, fixcvs,*
 c *                       and epo                                      *
 c **********************************************************************
       subroutine re_fix(nb,bsta,nf,fixsta,fixcvs,epo,nnf)
-      
+
       implicit none
       integer i,j,nnf,nb,nf,tty
       character fixsta(nf)*4,nfixsta(nf)*4,bsta(nb)*4
@@ -1097,17 +1097,17 @@ c **********************************************************************
 
       return
       end
-      
+
 c **********************************************************************
 c *   subroutine del_camp : delete all files and folders within the    *
 c *                         campaign and itsself                       *
 c **********************************************************************
       subroutine del_camp(oapath,camp)
-      
+
       implicit none
       integer i
       character apath*200,oapath*200,tmp*200,camp*7
-      
+
       apath=oapath
       do i=1,200
         if(apath(i:i)==' ') then
@@ -1117,20 +1117,20 @@ c **********************************************************************
       end do
       tmp='RMDIR '//apath(1:i+6)//' /S /Q'
       call system(tmp)
-      
+
       return
       end
-      
+
 c **********************************************************************
 c *   subroutine bubble_sort_n : sorting method                        *
 c **********************************************************************
       subroutine bubble_sort_n(a,b,n)
-      
+
       implicit none
       integer n,i,j
       character a(n*2)*4,tmp1*4,tmp2*4
       real*8 b(n),tmp3
-      
+
       do i=n-1,1,-1
         do j=1,i
           if(b(j).gt.b(j+1)) then
@@ -1146,7 +1146,7 @@ c **********************************************************************
           end if
         end do
       end do
-      
+
       return
       end
 
