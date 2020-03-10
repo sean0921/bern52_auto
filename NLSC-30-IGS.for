@@ -17,8 +17,8 @@ CCC      character buffer*20,cl*80,inf*50
       character basename*4,doy*3,ss*2,yr*2
 CCC      integer*4 nargs
 
-CCC      call getcl(cl)
-CCC      call getarg(nargs,buffer,cl)
+CCC      call get_command_argument(1, cl)
+CCC      call getarg_local(nargs,buffer,cl)
 
 CCC      inf=buffer
 
@@ -101,11 +101,11 @@ CCC      inf=buffer
       end
 
 
-CCC      subroutine getarg(numargs,arg,comline)
+CCC      subroutine getarg_local(numargs,arg,comline)
 CCC      implicit real*8(a-h,o-z)
 CCC      character  arg(*)*20,comline*(*)
 CCC
-CCC      n=nblank(comline)
+CCC      n=len_trim(comline)
 CCC      n=n+1
 CCC      j1=0
 CCC      j2=0

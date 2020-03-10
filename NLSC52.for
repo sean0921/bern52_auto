@@ -14,8 +14,8 @@ c **********************************************************************
       character doy*3,ss*2,yr*2,tmp1*200,site1*4,site2*4
       integer*4 nargs,num,i
 
-      call getcl(cl)
-      call getarg(nargs,buffer,cl)
+      call get_command_argument(1, cl)
+      call getarg_local(nargs,buffer,cl)
 
       inf=buffer
 
@@ -208,11 +208,11 @@ CC      call system(cmm)
       end
 
 
-      subroutine getarg(numargs,arg,comline)
+      subroutine getarg_local(numargs,arg,comline)
       implicit real*8(a-h,o-z)
       character  arg(*)*20,comline*(*)
 
-      n=nblank(comline)
+      n=len_trim(comline)
       n=n+1
       j1=0
       j2=0
