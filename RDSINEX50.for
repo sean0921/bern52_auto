@@ -10,28 +10,37 @@ c     2000.07.05
 C     TRANSFER Bern50 Sinex file to Sum file
 C     modified by dyj 2006/07/06
 
-      implicit    none
-      integer*2   maxsta
-      parameter   (maxsta=50)
-      integer*2   i,j,k,nargs,inbase,inincl,outbase,imax,ii,jj,
-     .            ibase,nten,ista,outdump,doy,session
-      real*8      x84(maxsta),y84(maxsta),z84(maxsta),
-     .            dx,dy,dz,v11,v12,v22,v13,v23,v33
-      real*8      rms,vcv(3*maxsta,3*maxsta),real(3)                 !,q(6,6)
-      real*8      stdx(3*maxsta)
-      character   insinex*40,outgps*40,line*120,baseline(28)*79,dump*40
-      character*4 stanam(maxsta)
-c        integer     index
+      implicit     none
+      integer*2    maxsta
+      parameter    (maxsta=50)
+      integer*4    nargs
+      integer*2    i,j,k,inbase,inincl,outbase,imax,ii,jj,
+     .             ibase,nten,ista,outdump,doy,session
+      real*8       x84(maxsta),y84(maxsta),z84(maxsta),
+     .             dx,dy,dz,v11,v12,v22,v13,v23,v33
+      real*8       rms,vcv(3*maxsta,3*maxsta),real(3)                 !,q(6,6)
+      real*8       stdx(3*maxsta)
+      character    insinex*40,outgps*40,line*120,baseline(28)*79,dump*40
+      character*4  stanam(maxsta)
+      character    nargcontent*64
+c     integer      index
+
+      nargs = 0
+      do
+        call get_command_argument(nargs, nargcontent)
+        if (len_trim(nargcontent) == 0) exit
+        nargs = nargs+1
+      end do
 
       if (nargs.lt.2) then
          print *,' usage   : rdsinex insinex '
          print *,' insinex : input SINEX Solution text file'
-           print *,' sinex file name format = yyyyddds.snx '
-           print *,' yyyy=year; ddd=day of year; s=session '
+         print *,' sinex file name format = yyyyddds.snx '
+         print *,' yyyy=year; ddd=day of year; s=session '
          stop
       endif
 
-      call getarg_local(1,insinex,i)
+      call getarg(1,insinex)
 
       call fnunit(inbase)
       call ofilopn1(inbase,insinex)
@@ -290,33 +299,5 @@ ccc      read(*,'(a)')oldname
       else
           open(iunit,file=oldname,status='old')
       endif
-      return
-      end
-
-
-      subroutine getarg_local(numargs,arg,comline)
-      implicit real*8(a-h,o-z)
-      character  arg(*)*20,comline*(*)
-
-      n=len_trim(comline)
-      n=n+1
-      j1=0
-      j2=0
-      numargs=0
-
- 560  ibegin=j2+1
-      do i=ibegin, n
-         if (comline(i:i).ne.' ') then
-            j1=i
-            do k=i,n
-               if (comline(k:k).eq.' ') then
-                  j2=k-1
-                  numargs=numargs+1
-                  arg(numargs)=comline(j1:j2)
-                  go to 560
-               endif
-            end do
-         endif
-      end do
       return
       end
