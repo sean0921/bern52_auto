@@ -21,38 +21,38 @@ C     modified by dyj 2006/07/06
       real*8      stdx(3*maxsta)
       character   insinex*40,outgps*40,line*120,baseline(28)*79,dump*40
       character*4 stanam(maxsta)
-c	integer     index
+c        integer     index
 
-      if (nargs().lt.2) then
+      if (nargs.lt.2) then
          print *,' usage   : rdsinex insinex '
          print *,' insinex : input SINEX Solution text file'
-	   print *,' sinex file name format = yyyyddds.snx '
-	   print *,' yyyy=year; ddd=day of year; s=session '
+           print *,' sinex file name format = yyyyddds.snx '
+           print *,' yyyy=year; ddd=day of year; s=session '
          stop
       endif
 
-      call getarg(1,insinex,i)
+      call getarg_local(1,insinex,i)
 
       call fnunit(inbase)
       call ofilopn1(inbase,insinex)
 c     add by dyj at 2005/02/04
       i=index(insinex,'.')
       outgps=insinex(1:i)
-	outgps(i+1:i+4)='sum'
-c	write(*,*)outgps
+        outgps(i+1:i+4)='sum'
+c        write(*,*)outgps
 
 c     add by dyj at 2006/07/06
       if (i.eq.9)then
           read(insinex,'(4x,i3,i1)')doy,session
-	else
-	   print *,' sinex file name format = yyyyddds.snx '
-	   print *,' yyyy=year; ddd=day of year; s=session '
+        else
+           print *,' sinex file name format = yyyyddds.snx '
+           print *,' yyyy=year; ddd=day of year; s=session '
          stop
       endif
 
 
 
-c	outgps='rdsinex.out'
+c        outgps='rdsinex.out'
       dump='rdsinex.dmp'
       call fnunit(outbase)
       open (outbase,file=outgps)
@@ -96,10 +96,10 @@ C      read(inbase,'(a)') line
       write(baseline(2),500)doy,session,doy,session
 500   format('E:\YU\',i3,i1,'\',i3,i1)
       do k=1,3
-	   if(baseline(2)(6+k:6+k).eq.' ')then
-	      baseline(2)(6+k:6+k)='0'
-	      baseline(2)(11+k:11+k)='0'
-	   endif
+           if(baseline(2)(6+k:6+k).eq.' ')then
+              baseline(2)(6+k:6+k)='0'
+              baseline(2)(11+k:11+k)='0'
+           endif
       enddo
 
 
@@ -121,8 +121,7 @@ c     read in station coordinates from SINEX
          if(line(1:1).eq.'-') exit
          write(outdump,'(a)') line
          write(*,'(a)') line
-         read(line,'(14x,a4,28x,E22.15,e12.5)')
-     .                           stanam(i),x84(i),stdx(3*i-2)
+         read(line,'(14x,a4,28x,E22.15,e12.5)')stanam(i),x84(i),stdx(3*i-2)
          read(inbase,'(a)',end=99999) line
          read(line,'(46x,E22.15,e12.5)')y84(i),stdx(3*i-1)
          read(inbase,'(a)',end=99999) line
@@ -231,9 +230,9 @@ c            v23=rms**2*v23
             baseline(6)(13:16)=stanam(i)(1:4)
             baseline(12)(13:16)=stanam(j)(1:4)
             write(baseline(2)(16:23),'(i4,a4)') ibase,'.SSF'
-	      do k=1,4
-		   if(baseline(2)(15+k:15+k).eq.' ')baseline(2)(15+k:15+k)='0'
-		  enddo
+              do k=1,4
+                   if(baseline(2)(15+k:15+k).eq.' ')baseline(2)(15+k:15+k)='0'
+              enddo
             write(baseline(7)(20:79),'(3f20.3)')x84(i),y84(i),z84(i)
             write(baseline(13)(20:79),'(3f20.3)')x84(j),y84(j),z84(j)
             write(baseline(20)(20:79),'(3f20.3)') dx,dy,dz
@@ -291,5 +290,33 @@ ccc      read(*,'(a)')oldname
       else
           open(iunit,file=oldname,status='old')
       endif
+      return
+      end
+
+
+      subroutine getarg_local(numargs,arg,comline)
+      implicit real*8(a-h,o-z)
+      character  arg(*)*20,comline*(*)
+
+      n=len_trim(comline)
+      n=n+1
+      j1=0
+      j2=0
+      numargs=0
+
+ 560  ibegin=j2+1
+      do i=ibegin, n
+         if (comline(i:i).ne.' ') then
+            j1=i
+            do k=i,n
+               if (comline(k:k).eq.' ') then
+                  j2=k-1
+                  numargs=numargs+1
+                  arg(numargs)=comline(j1:j2)
+                  go to 560
+               endif
+            end do
+         endif
+      end do
       return
       end
